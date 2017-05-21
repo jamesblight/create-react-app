@@ -987,11 +987,13 @@ You may also narrow down matches using `*` and/or `**`, to match the path exactl
 
 When setting up a WebSocket proxy, there are a some extra considerations to be aware of.
 If you're using a WebSocket engine like [Socket.io](https://socket.io/), you must have a Socket.io server running that you can use as the proxy target.
-Socket.io will not work with a standard WebSocket server. Specifically, don't expect Socket.io to work with [the websocket.org echo test](http://websocket.org/echo.html)
+[Socket.io-client](https://github.com/socketio/socket.io-client) will not work with a standard WebSocket server. Specifically, don't expect Socket.io to work with [the websocket.org echo test](http://websocket.org/echo.html)
 There's some good documentation available for [setting up a Socket.io server](https://socket.io/docs/)
 
 Standard WebSockets **will** work with a standard WebSocket server as well as the websocket.org echo test.
 You can use libraries like [ws](https://github.com/websockets/ws) for the server, with [native WebSockets in the browser](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket)
+
+NOTICE: if you would like access to **WebSocket that already hosted at domain URL** (API from another app) `ws://<domain_url>` - then **you don't need to enable proxy**, also you need to use [only the native browser WebSocket API](https://developer.mozilla.org/en/docs/Web/API/WebSocket) for communication with the server.
 
 Either way, you can proxy WebSocket requests manually in `package.json`
 ```js
@@ -1000,7 +1002,7 @@ Either way, you can proxy WebSocket requests manually in `package.json`
   "proxy": {
     "/socket": {
       // Your compatible WebSocket server
-      "target": "ws://<socket_url>",
+      "target": "ws://<socket_localhost:port>",
       // Tell http-proxy-middleware that this is a WebSocket proxy.
       // Also Allows you to proxy WebSocket requests without an additional http request
       // https://github.com/chimurai/http-proxy-middleware#external-websocket-upgrade
@@ -1011,9 +1013,6 @@ Either way, you can proxy WebSocket requests manually in `package.json`
   // ...
 }
 ```
-
-
-
 
 ## Using HTTPS in Development
 
